@@ -14,5 +14,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 # Add project library
 include_directories("${PROJECT_SOURCE_DIR}/libpmizer/include")
 
+add_definitions(-D_USE_MATH_DEFINES)
+
 add_subdirectory(libpmizer)
 add_subdirectory(pmizer_cmd)

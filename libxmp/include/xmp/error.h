@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace libpmizer {
+namespace xmp {
 
 class error
 {

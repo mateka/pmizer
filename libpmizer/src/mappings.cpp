@@ -1,10 +1,10 @@
-#include <libpmizer/mappings.h>
+#include <pmize/mappings.h>
 
 #include <cmath>
 #include <limits>
 
 
-namespace libpmizer {
+namespace pmize {
 
 double normalized(const int value, const int factor) {
 	return /*1.0 -*/ static_cast<double>(value) / factor;
@@ -84,18 +84,34 @@ vec<3> cube_to_sphere(const vec<3> v) {
 		return vec<2>{ X(w) + 1, Y(w) + 1 } * 0.5;
 	};
 	
-	if (abs(Z(v) - 1.0) < eps)
-		return { CubeFace::Front, to_01(XY(rot_mat<3>(vec<3>{0, 1, 0}, M_PI) * v)) };
-	else if (abs(Z(v) + 1.0) < eps)
-		return { CubeFace::Back, to_01(XY(v)) };
-	else if (abs(X(v) - 1.0) < eps)
-		return { CubeFace::Left, to_01(XY(rot_mat<3>(vec<3>{ 0, 1, 0 }, M_PI_2) *v)) };
-	else if (abs(X(v) + 1.0) < eps)
-		return { CubeFace::Right, to_01(XY(rot_mat<3>(vec<3>{ 0, 1, 0 }, -M_PI_2) *v)) };
-	else if (abs(Y(v) - 1.0) < eps)
-		return { CubeFace::Bottom, to_01(XZ(v)) };
-	else
-		return { CubeFace::Top, to_01(XZ(v)) };
+	auto face = CubeFace::Top;
+	mat<double, 3, 3> transform;
+	if (abs(Z(v) - 1.0) < eps) {
+		face = CubeFace::Front;
+		transform = rot_mat<3>(vec<3>{0, 1, 0}, M_PI);
+	}
+	else if (abs(Z(v) + 1.0) < eps) {
+		face = CubeFace::Back;
+		set_identity(transform);
+	}
+	else if (abs(X(v) - 1.0) < eps) {
+		face = CubeFace::Left;
+		transform = rot_mat<3>(vec<3>{ 0, 1, 0 }, M_PI_2);
+	}
+	else if (abs(X(v) + 1.0) < eps) {
+		face = CubeFace::Right;
+		transform = rot_mat<3>(vec<3>{ 0, 1, 0 }, -M_PI_2);
+	}
+	else if (abs(Y(v) - 1.0) < eps) {
+		face = CubeFace::Bottom;
+		transform = rot_mat<3>(vec<3>{ 1, 0, 0 }, M_PI_2);
+	}
+	else {
+		face = CubeFace::Top;
+		transform = rot_mat<3>(vec<3>{ 1, 0, 0 }, -M_PI_2);
+	}
+
+	return { face, to_01(XY(transform * v)) };
 }
 
 }

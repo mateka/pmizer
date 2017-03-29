@@ -1,13 +1,13 @@
-#include <libpmizer/to_sphere_map.h>
+#include <pmize/to_sphere_map.h>
 
 #include <boost/gil/gil_all.hpp>
 #include <boost/gil/extension/io/jpeg_io.hpp>
 
-#include <libpmizer/cube_map.h>
-#include <libpmizer/mappings.h>
+#include <pmize/cube_map.h>
+#include <pmize/mappings.h>
 
 
-namespace libpmizer {
+namespace pmize {
 
 void to_sphere_map(texture_view cubemap, texture_view spheremap) {
 	auto qmap = cube_map{ cubemap };

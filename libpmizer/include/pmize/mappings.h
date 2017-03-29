@@ -5,7 +5,7 @@
 #include <boost/qvm/all.hpp>
 
 
-namespace libpmizer {
+namespace pmize {
 
 template<::std::size_t Dim>
 using vec = ::boost::qvm::vec<double, Dim>;

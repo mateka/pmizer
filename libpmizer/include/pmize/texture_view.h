@@ -3,6 +3,6 @@
 #include <boost/gil/gil_all.hpp>
 
 
-namespace libpmizer {
+namespace pmize {
 using texture_view = ::boost::gil::rgb8_view_t;
 }

@@ -1,7 +1,7 @@
-#include <libpmizer/cube_map.h>
+#include <pmize/cube_map.h>
 
 
-namespace libpmizer {
+namespace pmize {
 
 cube_map::cube_map(texture_view texture)
 {

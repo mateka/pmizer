@@ -1,11 +1,11 @@
 #pragma once
 
 #include <stdexcept>
-#include <libpmizer/error.h>
-#include <libpmizer/texture_view.h>
+#include <pmize/error.h>
+#include <pmize/texture_view.h>
 
 
-namespace libpmizer {
+namespace pmize {
 
 // class for accessing intersection, when object do not intersect with face
 class not_a_cube_map_error : public error, public ::std::logic_error {

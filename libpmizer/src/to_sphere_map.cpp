@@ -1,15 +1,12 @@
 #include <pmize/to_sphere_map.h>
-
 #include <boost/gil/gil_all.hpp>
-#include <boost/gil/extension/io/jpeg_io.hpp>
-
 #include <pmize/cube_map.h>
 #include <pmize/mappings.h>
 
 
 namespace pmize {
 
-void to_sphere_map(texture_view cubemap, texture_view spheremap) {
+void to_sphere_map(image_view_t cubemap, image_view_t spheremap) {
 	auto qmap = cube_map{ cubemap };
 	for (int y = 0; y < spheremap.height(); ++y) {
 		for (int x = 0; x < spheremap.width(); ++x) {
@@ -45,17 +42,6 @@ void to_sphere_map(texture_view cubemap, texture_view spheremap) {
 			spheremap(x, y) = face(::std::get<0>(qmap_coords), ::std::get<1>(qmap_coords));
 		}
 	}
-}
-
-
-void to_sphere_map(const ::std::string& cubemap, const ::std::string& spheremap) {
-	namespace gil = ::boost::gil;
-	gil::rgb8_image_t input;
-	gil::jpeg_read_and_convert_image(cubemap.c_str(), input);
-
-	gil::rgb8_image_t output{ input.width(), input.height() };
-	to_sphere_map(gil::view(input), gil::view(output));
-	jpeg_write_view(spheremap.c_str(), gil::const_view(output));
 }
 
 }

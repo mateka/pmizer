@@ -1,8 +1,10 @@
 #pragma once
 
+#include <xmp/meta.h>
 #include <xmp/error.h>
 #include <functional>
 #include <stdexcept>
+#include <filesystem>
 
 
 namespace xmp {
@@ -36,13 +38,17 @@ public:
 };
 
 
-// Factory class of mete engine
-class meta_engine
+// Factory class of meta engine
+class meta_engine final
 {
 public:
 	meta_engine();
 	meta_engine(const meta_engine&) = delete;
 	meta_engine& operator=(const meta_engine&) = delete;
+
+	meta file_meta(
+		const ::std::experimental::filesystem::path& path,
+		const ::std::size_t width, const ::std::size_t height);
 private:
 	unique_init		m_engine;
 	unique_init		m_files;

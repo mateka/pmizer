@@ -5,11 +5,13 @@ cmake_policy(SET CMP0003 NEW)
 
 #add_definitions("/std:c++latest")
 
-# Find jpeg library
+# Find image libraries
 find_package(JPEG REQUIRED)
+find_package(TIFF REQUIRED)
+find_package(PNG REQUIRED)
 
 # Find Boost
-find_package(Boost 1.63 REQUIRED)
+find_package(Boost 1.63 REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 

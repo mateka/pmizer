@@ -1,12 +1,10 @@
 #pragma once
 
-#include <pmize/texture_view.h>
-#include <string>
+#include <pmize/image.h>
 
 
 namespace pmize {
 
-void to_sphere_map(texture_view cubemap, texture_view spheremap);
-void to_sphere_map(const ::std::string& cubemap, const ::std::string& spheremap);
+void to_sphere_map(image_view_t cubemap, image_view_t spheremap);
 
 }

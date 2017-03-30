@@ -3,7 +3,7 @@
 
 namespace pmize {
 
-cube_map::cube_map(texture_view texture)
+cube_map::cube_map(image_view_t texture)
 {
 	namespace gil = ::boost::gil;
 
@@ -21,9 +21,9 @@ cube_map::cube_map(texture_view texture)
 
 
 cube_map::cube_map(
-	texture_view left, texture_view right,
-	texture_view front, texture_view back,
-	texture_view top, texture_view bottom
+	image_view_t left, image_view_t right,
+	image_view_t front, image_view_t back,
+	image_view_t top, image_view_t bottom
 )
 	: m_left(left), m_right(right), m_front(front),
 	  m_back(back), m_top(top), m_bottom(bottom)

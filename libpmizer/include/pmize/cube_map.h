@@ -2,12 +2,12 @@
 
 #include <stdexcept>
 #include <pmize/error.h>
-#include <pmize/texture_view.h>
+#include <pmize/image.h>
 
 
 namespace pmize {
 
-// class for accessing intersection, when object do not intersect with face
+// class for wrong cube map
 class not_a_cube_map_error : public error, public ::std::logic_error {
 public:
 	not_a_cube_map_error() : ::std::logic_error("")
@@ -16,29 +16,29 @@ public:
 
 
 // Class for cube texture (6 sub-textures)
-class cube_map
+class cube_map final
 {
 public:
-	cube_map(texture_view texture);
+	cube_map(image_view_t texture);
 	cube_map(
-		texture_view left, texture_view right,
-		texture_view front, texture_view back,
-		texture_view top, texture_view bottom
+		image_view_t left, image_view_t right,
+		image_view_t front, image_view_t back,
+		image_view_t top, image_view_t bottom
 	);
 
-	texture_view left() const { return m_left; }
-	texture_view right() const { return m_right; }
-	texture_view front() const { return m_front; }
-	texture_view back() const { return m_back; }
-	texture_view top() const { return m_top; }
-	texture_view bottom() const { return m_bottom; }
+	image_view_t left() const { return m_left; }
+	image_view_t right() const { return m_right; }
+	image_view_t front() const { return m_front; }
+	image_view_t back() const { return m_back; }
+	image_view_t top() const { return m_top; }
+	image_view_t bottom() const { return m_bottom; }
 private:
-	texture_view		m_left;
-	texture_view		m_right;
-	texture_view		m_front;
-	texture_view		m_back;
-	texture_view		m_top;
-	texture_view		m_bottom;
+	image_view_t		m_left;
+	image_view_t		m_right;
+	image_view_t		m_front;
+	image_view_t		m_back;
+	image_view_t		m_top;
+	image_view_t		m_bottom;
 };
 
 }

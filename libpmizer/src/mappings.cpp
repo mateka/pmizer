@@ -83,6 +83,10 @@ vec<3> cube_to_sphere(const vec<3> v) {
 		using namespace ::boost::qvm;
 		return vec<2>{ X(w) + 1, Y(w) + 1 } * 0.5;
 	};
+
+	mat<double, 3, 3> mirror;
+	set_identity(mirror);
+	A00(mirror) = -1.0;
 	
 	auto face = CubeFace::Top;
 	mat<double, 3, 3> transform;
@@ -104,11 +108,11 @@ vec<3> cube_to_sphere(const vec<3> v) {
 	}
 	else if (abs(Y(v) - 1.0) < eps) {
 		face = CubeFace::Bottom;
-		transform = rot_mat<3>(vec<3>{ 1, 0, 0 }, M_PI_2);
+		transform = rot_mat<3>(vec<3>{ 1, 0, 0 }, M_PI_2) * mirror;
 	}
 	else {
 		face = CubeFace::Top;
-		transform = rot_mat<3>(vec<3>{ 1, 0, 0 }, -M_PI_2);
+		transform = rot_mat<3>(vec<3>{ 1, 0, 0 }, -M_PI_2) * mirror;
 	}
 
 	return { face, to_01(XY(transform * v)) };

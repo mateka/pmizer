@@ -1,6 +1,4 @@
 #include <pmize/to_sphere_map.h>
-#include <boost/gil/gil_all.hpp>
-#include <pmize/cube_map.h>
 #include <pmize/mappings.h>
 
 
@@ -27,20 +25,6 @@ spheremap_coords_to_cubemap(
 		{ ::std::get<0>(qmap_coords), ::std::get<1>(qmap_coords), cube_size },
 		::std::get<0>(qmap_info)
 	};
-}
-
-void to_sphere_map(image_view_t cubemap, image_view_t spheremap) {
-	auto qmap = cube_map{ cubemap };
-	for (int y = 0; y < spheremap.height(); ++y) {
-		for (int x = 0; x < spheremap.width(); ++x) {
-			const auto mapped = spheremap_coords_to_cubemap(
-				{ x, y, image_dimensions(spheremap.width(), spheremap.height()) },
-				image_dimensions(qmap.front().width(), qmap.front().height())
-			);
-			const auto coords = ::std::get<0>(mapped);
-			spheremap(x, y) = qmap.face(::std::get<1>(mapped))(coords.x(), coords.y());
-		}
-	}
 }
 
 }

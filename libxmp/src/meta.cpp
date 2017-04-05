@@ -186,7 +186,7 @@ SXMPMeta meta::createPanoMeta() const {
 		<< "</rdf:RDF>";
 
 	SXMPMeta pano_meta;
-	pano_meta.ParseFromBuffer(rdf.str().c_str(), rdf.str().length());
+	pano_meta.ParseFromBuffer(rdf.str().c_str(), static_cast<XMP_StringLen>(rdf.str().length()));
 	return pano_meta;
 }
 

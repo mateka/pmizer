@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <tuple>
 #include <boost/qvm/all.hpp>
+#include <pmize/cube_face.h>
 
 
 namespace pmize {
@@ -11,21 +12,16 @@ template<::std::size_t Dim>
 using vec = ::boost::qvm::vec<double, Dim>;
 
 
-enum class CubeFace {
-	Left,
-	Front,
-	Right,
-	Back,
-	Top,
-	Bottom
-};
+double normalized(const int value, const ::std::ptrdiff_t factor);
+vec<2> normalized(
+	const int x, const int y,
+	const ::std::ptrdiff_t width,
+	const ::std::ptrdiff_t height
+);
 
-
-double normalized(const int value, const int factor);
-vec<2> normalized(const int x, const int y, const int width, const int height);
-
-int unnormalized(const double value, const int factor);
-::std::tuple<int, int> unnormalized(const vec<2> v, const int width, const int height);
+int unnormalized(const double value, const ::std::ptrdiff_t factor);
+::std::tuple<int, int> unnormalized(
+	const vec<2> v, const ::std::ptrdiff_t width, const ::std::ptrdiff_t height);
 
 vec<3> to_sphere(const vec<2> v, const double radius = 1.0);
 

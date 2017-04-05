@@ -6,40 +6,39 @@
 
 namespace pmize {
 
+::std::tuple<image_coordinates, CubeFace>
+spheremap_coords_to_cubemap(
+	const image_coordinates on_sphere,
+	const image_dimensions cube_size
+) {
+	const auto sp_tex_coord = normalized(
+		on_sphere.x(), on_sphere.y(),
+		on_sphere.size().width() - 1, on_sphere.size().height() - 1
+	);
+	const auto spherical_coords = to_sphere(sp_tex_coord);
+	const auto cartesian_sphere = spherical_to_cartesian(spherical_coords);
+	const auto cube = sphere_to_cube(cartesian_sphere);
+	const auto qmap_info = to_cube_map(cube);
+	const auto qmap_coords = unnormalized(
+		::std::get<1>(qmap_info),
+		cube_size.width() - 1, cube_size.height() - 1
+	);
+	return {
+		{ ::std::get<0>(qmap_coords), ::std::get<1>(qmap_coords), cube_size },
+		::std::get<0>(qmap_info)
+	};
+}
+
 void to_sphere_map(image_view_t cubemap, image_view_t spheremap) {
 	auto qmap = cube_map{ cubemap };
 	for (int y = 0; y < spheremap.height(); ++y) {
 		for (int x = 0; x < spheremap.width(); ++x) {
-			const auto sp_tex_coord = normalized(x, y, spheremap.width() - 1, spheremap.height() - 1);
-			const auto spherical_coords = to_sphere(sp_tex_coord);
-			const auto cartesian_sphere = spherical_to_cartesian(spherical_coords);
-			const auto cube = sphere_to_cube(cartesian_sphere);
-			const auto qmap_info = to_cube_map(cube);
-
-			auto face = qmap.front();
-			switch (::std::get<0>(qmap_info))
-			{
-			case CubeFace::Left:
-				face = qmap.left();
-				break;
-			case CubeFace::Front:
-				face = qmap.front();
-				break;
-			case CubeFace::Right:
-				face = qmap.right();
-				break;
-			case CubeFace::Back:
-				face = qmap.back();
-				break;
-			case CubeFace::Top:
-				face = qmap.top();
-				break;
-			case CubeFace::Bottom:
-				face = qmap.bottom();
-				break;
-			}
-			const auto qmap_coords = unnormalized(::std::get<1>(qmap_info), face.width() - 1, face.height() - 1);
-			spheremap(x, y) = face(::std::get<0>(qmap_coords), ::std::get<1>(qmap_coords));
+			const auto mapped = spheremap_coords_to_cubemap(
+				{ x, y, image_dimensions(spheremap.width(), spheremap.height()) },
+				image_dimensions(qmap.front().width(), qmap.front().height())
+			);
+			const auto coords = ::std::get<0>(mapped);
+			spheremap(x, y) = qmap.face(::std::get<1>(mapped))(coords.x(), coords.y());
 		}
 	}
 }

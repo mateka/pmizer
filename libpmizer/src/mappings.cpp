@@ -6,22 +6,29 @@
 
 namespace pmize {
 
-double normalized(const int value, const int factor) {
-	return /*1.0 -*/ static_cast<double>(value) / factor;
+double normalized(const int value, const ::std::ptrdiff_t factor) {
+	return static_cast<double>(value) / factor;
 }
 
 
-vec<2> normalized(const int x, const int y, const int width, const int height) {
+vec<2> normalized(
+	const int x, const int y,
+	const ::std::ptrdiff_t width, const ::std::ptrdiff_t height
+) {
 	return { normalized(x, width), normalized(y, height) };
 }
 
 
-int unnormalized(const double value, const int factor) {
+int unnormalized(const double value, const ::std::ptrdiff_t factor) {
 	return static_cast<int>(value * factor);
 }
 
 
-::std::tuple<int, int> unnormalized(const vec<2> v, const int width, const int height) {
+::std::tuple<int, int> unnormalized(
+	const vec<2> v,
+	const ::std::ptrdiff_t width,
+	const ::std::ptrdiff_t height
+) {
 	using namespace ::boost::qvm;
 	return { unnormalized(X(v), width), unnormalized(Y(v), height) };
 }
